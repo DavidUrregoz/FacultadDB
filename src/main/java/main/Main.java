@@ -39,10 +39,10 @@ public class Main {
                     "8 ->Ingresar Persona (cedula,Nombre,Apellido,Apellido,fecha de nacimiento,ciudad,esprofesor,estudiante)\n" +
                     "9 ->Ingresar Materia (salon, bloque,nombre de materia,creditos,dias,horas,presencial,laboratorio)\n" +
                     "10->Matricular estudiante a materia (Cedula,Codigo de materia)\n" +
-                    "11->Asignar profesor a Materia\n" +
-                    "12->Eliminacion logica de Persona \n" +
-                    "13->Inhabilitar materia \n" +
-                    "14->Asignar una nota de una amteria a un estudiante\n" +
+                    "11->Asignar profesor a Materia (Cedula,Codigo de materia)\n" +
+                    "12->Elominacion logica de personas (Cedula,true or false) \n" +
+                    "13->Inhabilitar materia (Codigo de materia, true or false)\n" +
+                    "14->Asignar una nota de una amteria a un estudiante (Codigo de materia,Cedula,Nota a Asignar)\n" +
                     "16->Profesores, Asignaturas y  Horarios\n" +
                     "17->Estudiantes y materias Matriculadas\n" +
                     "0 ->SALIR");
@@ -90,8 +90,15 @@ public class Main {
                 case 11:
                     spAsignar();
                     break;
-
-
+                case 12:
+                    spEliminarPersona();
+                    break;
+                case 13:
+                    spEliminarMateria();
+                    break;
+                case 14:
+                    spNotaestudiante();
+                    break;
             }
         }
         logout();
@@ -213,6 +220,45 @@ public class Main {
         //call sp_ingresar_relacion_toma("1033342011",11,@respuesta);
     }
 
+    private static void spEliminarPersona() throws SQLException {
+        System.out.println("Ingrese de esta manera los parametros = 1033342052,true");
+        System.out.println("true para activar, false para desactivar");
+        sc = new Scanner(System.in);
+        String temporal = sc.nextLine();
+        String[] parameters = temporal.split(",");
+        temporal=("sp_update_activo_persona(\""+parameters[0]+"\","+parameters[1]+",@respuesta)");
+        alterarProcedimientos(temporal);
+        mySqlOperations.setSqlStatement(CALL_SP);
+        sentecia();
+        //call sp_update_activo_persona("245684787",false,@respuesta);
+    }
+
+    private static void spEliminarMateria() throws SQLException {
+        System.out.println("Ingrese de esta manera los parametros = 15,true");
+        System.out.println("true para activar, false para desactivar");
+        sc = new Scanner(System.in);
+        String temporal = sc.nextLine();
+        String[] parameters = temporal.split(",");
+        temporal=("sp_update_activo_materia("+parameters[0]+","+parameters[1]+",@respuesta)");
+        alterarProcedimientos(temporal);
+        mySqlOperations.setSqlStatement(CALL_SP);
+        sentecia();
+        //call sp_update_activo_materia(16,false,@respuesta);
+    }
+
+    private static void spNotaestudiante() throws SQLException {
+        System.out.println("Ingrese de esta manera los parametros = 2,1033342050,4.9");
+        System.out.println("true para activar, false para desactivar");
+        sc = new Scanner(System.in);
+        String temporal = sc.nextLine();
+        String[] parameters = temporal.split(",");
+        temporal=("sp_update_nota_materia("+parameters[0]+",\""+parameters[1]+"\","+parameters[2]+",@respuesta)");
+        System.out.println("temporal = " + temporal);
+        alterarProcedimientos(temporal);
+        mySqlOperations.setSqlStatement(CALL_SP);
+        sentecia();
+        //call sp_update_nota_materia(2,"1032244123",4.4,@respuesta);
+    }
 
 
 
