@@ -43,8 +43,10 @@ public class Main {
                     "12->Elominacion logica de personas (Cedula,true or false) \n" +
                     "13->Inhabilitar materia (Codigo de materia, true or false)\n" +
                     "14->Asignar una nota de una amteria a un estudiante (Codigo de materia,Cedula,Nota a Asignar)\n" +
-                    "16->Profesores, Asignaturas y  Horarios\n" +
-                    "17->Estudiantes y materias Matriculadas\n" +
+                    "15->Profesores, Asignaturas y  Horarios\n" +
+                    "16->Estudiantes y materias Matriculadas\n" +
+                    "17->Materias de todos los departamentos\n" +
+                    "18->Materias, Salones, Bloques y su Uso\n" +
                     "0 ->SALIR");
             entrada = sc2.next();
             if (comprobarNumero(entrada)) {
@@ -99,17 +101,21 @@ public class Main {
                 case 14:
                     spNotaestudiante();
                     break;
+                case 15:
+                    psJoinProfesores();
+                    break;
+                case 16:
+                    psJoinEstudiantes();
+                    break;
+                case 17:
+                    psJoinDepartamento();
+                    break;
+                case 18:
+                    psJoinMateriasBloque();
+                    break;
             }
         }
         logout();
-
-
-        //selectAllFromDirector();
-
-        //callSpListarPeliculas();
-
-
-
     }
 
 
@@ -259,6 +265,31 @@ public class Main {
         sentecia();
         //call sp_update_nota_materia(2,"1032244123",4.4,@respuesta);
     }
+
+    private static void psJoinProfesores() throws SQLException {
+        alterarProcedimientos("sp_join_personas()");
+        mySqlOperations.setSqlStatement(CALL_SP);
+        sentecia();
+    }
+
+    private static void psJoinEstudiantes() throws SQLException {
+        alterarProcedimientos("sp_join_estudiantes()");
+        mySqlOperations.setSqlStatement(CALL_SP);
+        sentecia();
+    }
+
+    private static void psJoinDepartamento() throws SQLException {
+        alterarProcedimientos("sp_join_materias_departamento()");
+        mySqlOperations.setSqlStatement(CALL_SP);
+        sentecia();
+    }
+
+    private static void psJoinMateriasBloque() throws SQLException {
+        alterarProcedimientos("sp_join_materias_bloque()");
+        mySqlOperations.setSqlStatement(CALL_SP);
+        sentecia();
+    }
+
 
 
 
