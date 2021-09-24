@@ -14,4 +14,5 @@ public interface DataBase {
     public void close();
 
     public void printResultSet() throws SQLException;
+
 }
