@@ -19,7 +19,7 @@ public class Main {
     private static  String CALL_SP;
 
     private static final MySqlOperations mySqlOperations = new MySqlOperations();
-    public Scanner sca;
+    public static Scanner sc;
     public static void main(String[] args) throws Exception {
         PropertyConfigurator.configure(USER_DIR.getValue() + LOG4J_PROPERTIES_FILE_PATH.getValue());
         Scanner sc2=new Scanner(System.in);
@@ -36,7 +36,7 @@ public class Main {
                     "5 ->Materias Disponibles y Horarios\n" +
                     "6 ->Lugares de Recidencia \n" +
                     "7 ->Busqueda De personas (cedula,nombre,ciudad,edad1,edad2) \n" +
-                    "8 ->Ingresar Persona (cedula,apellido,apellido,fecha de nacimiento,ciudad,esprofesor,estudiante)\n" +
+                    "8 ->Ingresar Persona (cedula,Nombre,Apellido,Apellido,fecha de nacimiento,ciudad,esprofesor,estudiante)\n" +
                     "9 ->Ingresar Materia (salon, bloque,nombre de materia,creditos,dias,horas,presencial,laboratorio)\n" +
                     "10->Matricular estudiante a materia \n" +
                     "11->Asignar profesor a Materia\n" +
@@ -75,6 +75,14 @@ public class Main {
                 case 6:
                     spLugaresRecidencia();
                     break;
+                case 7:
+                    spFiltarPersona();
+                    break;
+                case 8:
+                    spIngresarPersona();
+                    break;
+
+
 
 
 
@@ -140,6 +148,29 @@ public class Main {
         alterarProcedimientos("sp_listar_personas()");
         mySqlOperations.setSqlStatement(CALL_SP);
         sentecia();
+    }
+
+    private static void spFiltarPersona() throws SQLException {
+        System.out.println("Ingrese de esta manera los parametros = 1033342050,David,Amaga,20,28 ");
+        sc = new Scanner(System.in);
+        String temporal = sc.nextLine();
+        String[] parameters = temporal.split(",");
+        temporal=("sp_personas_parametrico(\""+parameters[0]+"%\",\""+parameters[1]+"%\",\""+parameters[2]+"%\","+parameters[3]+","+parameters[4])+")";
+        alterarProcedimientos(temporal);
+        mySqlOperations.setSqlStatement(CALL_SP);
+        sentecia();
+    }
+
+    private static void spIngresarPersona() throws SQLException {
+        System.out.println("Ingrese de esta manera los parametros = 1033342050,David,Urrego,Zapata,1997-04-17,Amaga,false,true");
+        sc = new Scanner(System.in);
+        String temporal = sc.nextLine();
+        String[] parameters = temporal.split(",");
+        temporal=("sp_ingresar_persona(\""+parameters[0]+"\",\""+parameters[1]+"\",\""+parameters[2]+"\",\""+parameters[3]+"\",\""+parameters[4]+"\",\""+parameters[5]+"\","+parameters[6]+","+parameters[7]+",true,@respuesta)");
+        alterarProcedimientos(temporal);
+        mySqlOperations.setSqlStatement(CALL_SP);
+        sentecia();
+        //call sp_ingresar_persona("24568555","Fidel","Castro","Castillo","1926-06-13","Cuba",false,true,false,@respuesta);
     }
 
 
