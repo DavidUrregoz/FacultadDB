@@ -38,7 +38,7 @@ public class Main {
                     "7 ->Busqueda De personas (cedula,nombre,ciudad,edad1,edad2) \n" +
                     "8 ->Ingresar Persona (cedula,Nombre,Apellido,Apellido,fecha de nacimiento,ciudad,esprofesor,estudiante)\n" +
                     "9 ->Ingresar Materia (salon, bloque,nombre de materia,creditos,dias,horas,presencial,laboratorio)\n" +
-                    "10->Matricular estudiante a materia \n" +
+                    "10->Matricular estudiante a materia (Cedula,Codigo de materia)\n" +
                     "11->Asignar profesor a Materia\n" +
                     "12->Eliminacion logica de Persona \n" +
                     "13->Inhabilitar materia \n" +
@@ -81,9 +81,15 @@ public class Main {
                 case 8:
                     spIngresarPersona();
                     break;
-
-
-
+                case 9:
+                    spIngresarMateria();
+                    break;
+                case 10:
+                    spMatricular();
+                    break;
+                case 11:
+                    spAsignar();
+                    break;
 
 
             }
@@ -166,11 +172,45 @@ public class Main {
         sc = new Scanner(System.in);
         String temporal = sc.nextLine();
         String[] parameters = temporal.split(",");
-        temporal=("sp_ingresar_persona(\""+parameters[0]+"\",\""+parameters[1]+"\",\""+parameters[2]+"\",\""+parameters[3]+"\",\""+parameters[4]+"\",\""+parameters[5]+"\","+parameters[6]+","+parameters[7]+",true,@respuesta)");
+        temporal=("sp_ingresar_persona(\""+parameters[0]+"\",\""+parameters[1]+"\",\""+parameters[2]+"\",\""+parameters[3]+"\",\""+parameters[4]+"\",\""+parameters[5]+"\","+parameters[6]+","+parameters[7]+",true,@registros_alterados)");
         alterarProcedimientos(temporal);
         mySqlOperations.setSqlStatement(CALL_SP);
         sentecia();
-        //call sp_ingresar_persona("24568555","Fidel","Castro","Castillo","1926-06-13","Cuba",false,true,false,@respuesta);
+    }
+
+    private static void spIngresarMateria() throws SQLException {
+        System.out.println("Ingrese de esta manera los parametros = 101,19,Filosofia,5,lunes-martes,8pm-10pm,true,true");
+        sc = new Scanner(System.in);
+        String temporal = sc.nextLine();
+        String[] parameters = temporal.split(",");
+        temporal=("sp_ingresar_materia("+parameters[0]+","+parameters[1]+",\""+parameters[2]+"\","+parameters[3]+",\""+parameters[4]+"\",\""+parameters[5]+"\","+parameters[6]+","+parameters[7]+",true,@respuesta)");
+        alterarProcedimientos(temporal);
+        mySqlOperations.setSqlStatement(CALL_SP);
+        sentecia();
+        //call sp_ingresar_materia(101,19,"Geometria Vectoria",5,"Lunes-Sabado","8am a 10am",true,false,true,@respuesta);
+    }
+    private static void spMatricular() throws SQLException {
+        System.out.println("Ingrese de esta manera los parametros = 1033342052,2");
+        sc = new Scanner(System.in);
+        String temporal = sc.nextLine();
+        String[] parameters = temporal.split(",");
+        temporal=("sp_ingresar_relacion_toma(\""+parameters[0]+"\","+parameters[1]+",@respuesta)");
+        alterarProcedimientos(temporal);
+        mySqlOperations.setSqlStatement(CALL_SP);
+        sentecia();
+        //call sp_ingresar_relacion_toma("1033342011",11,@respuesta);
+    }
+
+    private static void spAsignar() throws SQLException {
+        System.out.println("Ingrese de esta manera los parametros = 1033342052,2");
+        sc = new Scanner(System.in);
+        String temporal = sc.nextLine();
+        String[] parameters = temporal.split(",");
+        temporal=("sp_ingresar_relacion_dicta(\""+parameters[0]+"\","+parameters[1]+",@respuesta)");
+        alterarProcedimientos(temporal);
+        mySqlOperations.setSqlStatement(CALL_SP);
+        sentecia();
+        //call sp_ingresar_relacion_toma("1033342011",11,@respuesta);
     }
 
 
@@ -180,6 +220,7 @@ public class Main {
     private static void sentecia() throws SQLException{
         mySqlOperations.executeSqlStatement();
         mySqlOperations.printResultSet();
+
     }
 
     private static void alterarSeleccionar(String vista){
